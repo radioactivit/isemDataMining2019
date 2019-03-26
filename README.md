@@ -229,6 +229,11 @@ Bien évidemment, pour avoir de l'aide, on saisira aussi ses problèmes sur Goog
 - library
 - ...
 
+### Autre
+
+- return (qui est une fonction, ce qui est très rare et n'est pas le cas dans la plupart des langages de programmation)
+- date
+
 ### Tout est fonction !
 
 En R, tout ou presque est une fonction.
@@ -331,4 +336,8 @@ On déclare une fonction prenant un paramètre
 
 On l'appelle
 
-    direBonjourA("julien)
+    direBonjourA("julien")
+
+TODO:
+
+1. En lisant comment marche la fonction quantile, on veut une fonction appelée `allDeciles` qui prend en paramètre un vecteur de numériques et renvoie un autre vecteur de numériques. Le vecteur retour doit avoir 9 valeurs : le premier décile, le deuxième décile, le troisième décile, le neuvième décile (...)
