@@ -101,6 +101,13 @@ L'affectation se fait avec `<-` même si = marche aussi. <- est souvent préfér
 
     a <- c(5,10,14)
 
+On peut accéder aux éléments d'un vecteur comme ceci :
+
+    a[1] #accéder au premier élément
+    a[2] #accéder au deuxième élément
+
+Dans la plupart des langages, les tableaux commencent à l'index 0. En R, ils commencent à l'index 1.
+
 Pour afficher un vecteur ou bien n'importe quoi d'autre, on peut utiliser la fonction `print` ou `cat` avec en paramètre ce qu'on veut afficher
 
     print(a)
@@ -184,6 +191,7 @@ Bien évidemment, pour avoir de l'aide, on saisira aussi ses problèmes sur Goog
 
 - c (pour concaténer/créer des vecteurs)
 - length (pour avoir la taille d'un vecteur)
+- distinct (pour avoir un nouveau vecteur sans les valeurs en double)
 
 ### Les is. pour savoir si un objet est du bon type
 
@@ -200,6 +208,8 @@ Bien évidemment, pour avoir de l'aide, on saisira aussi ses problèmes sur Goog
 
 - as.character (pour convertir un vecteur, par exemple de nombres, en un vecteur de chaînes de caractères)
 - as.numeric
+- as.vector
+- as.list
 - ...
 
 ### Quelques fonctions statistiques
@@ -297,3 +307,28 @@ TODO:
 
 1. Installer le package Shiny et faire fonctionner l'exemple proposé
 2. Installer le package data.table et faire fonctionner l'exemple
+3. Constater qu'une data.table est une data.frame. On parle d'héritage (en programmation orientée objet)
+
+## Créer votre propre fonction
+
+On a utilisé beaucoup de fonctions mais on peut bien sûr en créer.
+
+Ici, on définit une fonction :
+
+    direBonjour <- function() {
+        print("Bonjour")
+    }
+
+Et là, on l'appelle, elle ne prend aucun paramètre
+
+    direBonjour()
+
+On déclare une fonction prenant un paramètre
+
+    direBonjourA <- function(prenom) {
+        print(paste("Bonjour",prenom))
+    }
+
+On l'appelle
+
+    direBonjourA("julien)
