@@ -186,6 +186,9 @@ Bien évidemment, pour avoir de l'aide, on saisira aussi ses problèmes sur Goog
 - print (et cat, pour afficher l'élément donné en paramètre)
 - getwd (pour avoir le répertoire de travail courant, utile pour récupérer un fichier ou sauvegarder un fichier ou une session par exemple)
 - rm (pour supprimer une variable)
+- q
+- load
+- save.image
 
 ### Autour des vecteurs
 
@@ -241,6 +244,18 @@ En R, tout ou presque est une fonction.
 Même `<-` qui est une fonction prenant deux paramètres ! Essayez par vous-mêmes de l'utiliser :
 
     `<-`(b,1022)
+
+Du coup, tout ce qui est suit correspond à des fonctions :
+
+- `<-`
+- `>=`
+- `<=`
+- `>`
+- `<`
+- `+`
+- `-`
+- `/`
+- `^`
 
 ## Notion de session
 
