@@ -195,11 +195,11 @@ Bien évidemment, pour avoir de l'aide, on saisira aussi ses problèmes sur Goog
 - c (pour concaténer/créer des vecteurs)
 - length (pour avoir la taille d'un vecteur)
 - distinct (pour avoir un nouveau vecteur sans les valeurs en double)
+- paste (pour concaténer des chaînes de caractères ou collapser un vecteur)
 
 ### Les is. pour savoir si un objet est du bon type
 
 - is.numeric (pour savoir si un vecteur est un numérique ou non)
-- paste (pour concaténer des chaînes de caractères ou collapser un vecteur)
 - is.integer
 - is.character
 - is.vector
