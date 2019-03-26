@@ -49,6 +49,8 @@ Au lancement de RStudio, notre environnement de développement intégré, on dis
 
 On va faire apparaître une quatrième zone, généralement en haut à gauche (la console va descendre en bas à gauche). Pour ce faire, on va créer un nouveau fichier R. File => New => New R Script.
 
+N'hésitez pas d'ailleurs à créer un projet. Un projet c'est un ensemble de fichiers et dossiers, toute une arborescence. Et ça inclut l'environnement de travail R (votre session). Si vous travaillez sur plusieurs projets en parallèle, c'est plus pratique de travailler ainsi.
+
 Dans un fichier R Script, on peut tout simplement écrire du code R. Une fois qu'on en est satisfait, on peut l'évaluer dans la console. Pas besoin de copier coller, il suffit de cliquer sur `Source` (Source the content of the active document).
 
 C'est comme si on avait écrit tout le code dans la console.
@@ -256,6 +258,7 @@ Du coup, tout ce qui est suit correspond à des fonctions :
 - `-`
 - `/`
 - `^`
+- `%in%`
 
 ## Notion de session
 
