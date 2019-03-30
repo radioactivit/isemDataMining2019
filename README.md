@@ -196,7 +196,7 @@ Bien évidemment, pour avoir de l'aide, on saisira aussi ses problèmes sur Goog
 
 - c (pour concaténer/créer des vecteurs)
 - length (pour avoir la taille d'un vecteur)
-- distinct (pour avoir un nouveau vecteur sans les valeurs en double)
+- unique (pour avoir un nouveau vecteur sans les valeurs en double)
 - paste (pour concaténer des chaînes de caractères ou collapser un vecteur)
 
 ### Les is. pour savoir si un objet est du bon type
@@ -226,6 +226,8 @@ Bien évidemment, pour avoir de l'aide, on saisira aussi ses problèmes sur Goog
 - sd (écart-type)
 - median (médiane)
 - quantile (quartiles, déciles...)
+- order
+- sort
 - ...
 
 ### Autour des packages externes
@@ -247,7 +249,7 @@ Même `<-` qui est une fonction prenant deux paramètres ! Essayez par vous-mêm
 
     `<-`(b,1022)
 
-Du coup, tout ce qui est suit correspond à des fonctions :
+Du coup, tout ce qui est suit correspond à des fonctions (qui pour ne rien gâcher sont vectorielles) :
 
 - `<-`
 - `>=`
@@ -259,6 +261,8 @@ Du coup, tout ce qui est suit correspond à des fonctions :
 - `/`
 - `^`
 - `%in%`
+- `&`
+- `|`
 
 ## Notion de session
 
@@ -308,6 +312,21 @@ Ici on déclare une matrice avec 10 lignes et 12 colonnes remplie de 0
 myList <- list(c(12,14),list(c("test")),matrix(0,10,12))
 ```
 
+Les listes peuvent avoir des clefs nommées (plutôt que 1, 2, 3...)
+
+    myList <- list(prenom="jean",nom="pierre") #pour créer une telle liste
+    myList$prenom #pour lire le contenu de la clef prénom
+    myList$nom #pour le nom par exemple
+    myList[["prenom"]] #pour lire le contenu de la clef prénom également, (autre écriture)
+    myList[["nom"]] #pour le nom par exemple
+
+    myList[["prenom"]] <- "jacques" #remplace la valeur contenue dans la clef prénom
+    myList[["autreClef"]] <- "jeRajouteUneClef"
+
+Ceci s'applique aussi aux vecteurs mais c'est rarement utile :
+
+    monVecteur <- c(nom="jerome",prenom="julien")
+
 - array (matrice mais pouvant avoir plus de deux dimensions)
 
 - data.frame (matrice mais avec pour chaque colonne un type pouvant être différent, une data.frame est une liste de vecteurs)
@@ -331,6 +350,107 @@ TODO:
 1. Installer le package Shiny et faire fonctionner l'exemple proposé
 2. Installer le package data.table et faire fonctionner l'exemple
 3. Constater qu'une data.table est une data.frame. On parle d'héritage (en programmation orientée objet)
+
+### Shiny code de base
+
+Installer la librairie (à faire une seule fois)
+
+    install.packages("shiny")
+
+Charger la librairie
+
+    library(shiny)
+
+Avoir de l'aide sur la fonction runExample
+
+    ?runExample
+
+Lister les exemples disponibles
+
+    runExample()
+
+Lancer le premier exemple
+
+    runExample("01_hello")
+
+Avoir de l'aide sur la fonction runExample
+
+Lancer son propre exemple
+
+```# Define UI for app that draws a histogram ----
+ui <- fluidPage(
+
+  # App title ----
+  titlePanel("Hello from ISEM 2019!"),
+
+  # Sidebar layout with input and output definitions ----
+  sidebarLayout(
+
+    # Sidebar panel for inputs ----
+    sidebarPanel(
+
+      # Input: Slider for the number of bins ----
+      sliderInput(inputId = "bins",
+                  label = "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30)
+
+    ),
+
+    # Main panel for displaying outputs ----
+    mainPanel(
+
+      # Output: Histogram ----
+      plotOutput(outputId = "distPlot")
+
+    )
+  )
+)
+
+# Define server logic required to draw a histogram ----
+server <- function(input, output) {
+
+  # Histogram of the Old Faithful Geyser Data ----
+  # with requested number of bins
+  # This expression that generates a histogram is wrapped in a call
+  # to renderPlot to indicate that:
+  #
+  # 1. It is "reactive" and therefore should be automatically
+  #    re-executed when inputs (input$bins) change
+  # 2. Its output type is a plot
+  output$distPlot <- renderPlot({
+
+    x    <- faithful$waiting
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+
+    hist(x, breaks = bins, col = "#75AADB", border = "white",
+         xlab = "Waiting time to next eruption (in mins)",
+         main = "Histogram of waiting times")
+
+  })
+
+}
+
+shinyApp(ui = ui, server = server)
+```
+
+### data.table, code de base
+
+Installer et charger la librairie
+
+    install.packages("data.table")
+    library(data.table)
+
+cars est une data.frame disponible nativement dans R. Mais ce n'est pas une data.table. On peut la convertir en data.table avec la fonction as.data.table. Cette fonction, nous ne pouvons l'utiliser que par
+
+    carsDt <- as.data.table(cars)
+
+Quelques manipulations
+
+    carsWithSpeedSuperior20 <- carsDt[speed >= 20] #un filtre, on ne veut que les lignes où speed est supérieur ou égal à 20, on obtient une nouvelle data.table
+    carsWithSpeedSuperior20[order(-dist,speed)] #on trie la data.table par distance décroissante et speed croissante
+    carsWithSpeedSuperior20[,speedMoinsUn := speed - 1] #on rajoute une nouvelle colonne speedMoinsUn valant speed - 1. On rappelle que le - est une opération vectorielle et que le 1 est recyclé autant de fois qu'il y a de lignes dans la data.table
 
 ## Créer votre propre fonction
 
@@ -380,8 +500,63 @@ This dataset was compiled by Rebrickable, which is a website to help identify wh
 
 This is a very rich dataset that offers lots of rooms for exploration, especially since the “sets” file includes the year in which a set was first released.
 
-###How have the size of sets changed over time?
+### Précisions
+
+La boîte de jeu Lego
+
+- Un thème = Star Wars, Police, Bateau...
+- Un set = une boîte de jeu. Une boîte de jeu a un et un unique thème. Il y a 614 thèmes.
+
+Les briques élémentaires
+
+- Une part = une brique élémentaire (déclinable en plusieurs couleurs, mais la table ne décrit pas ces déclinaisons. Les briques identiques à la couleur près forment une même `part`)
+- Une part_categories = une catégorie de brique (Windows and doors, tiles, pneumatics...). Chaque brique élémentaire a une catégorie. Il y a seulement 57 catégories.
+
+Autour des inventaires
+
+- Un inventaire = un ensemble de pièces.
+- Une pièce d'un inventaire (Inventory_part) = une brique élémentaire (part), pour un inventaire donné, dans une couleur donnée, avec une quantité donnée.
+- Couleur = une couleur. Il y en a 135. Chaque inventory_part a une couleur.
+
+On va ignorer le fichier inventory_sets. Il n'est pas utile à la compréhension.
+On va se cantonner à seulement certains sets :
+
+On va ignorer les sets qui ont plusieurs inventories (plusieurs versions) ou bien qui n'ont pas d'inventories du tout. Ca concerne très très peu d'entrées.
+On va ignorer les sets dont la propriété num_parts ne vaut pas la somme des inventory_parts relatives à leur inventory (penser à multiplier par la quantité de chaque inventory parts).
+
+Exemples
+
+```
+library(data.table)
+inventories <- fread("lego/inventories.csv")
+inventory_parts <- fread("lego/inventory_parts.csv")
+inventory_sets <- fread("lego/inventory_sets.csv")
+sets <- fread("lego/sets.csv")
+
+setsWithoutInventory <- sets[!(set_num %chin% inventories$set_num)] # %in% est un opérateur vectoriel qui pour chaque élément du vecteur de gauche vérifie que l'élément est bien présent dans le vecteur de droite. Le ! est un opérateur qui sur un vecteur de booléens prend sa négation (donc chaque FALSE devient un TRUE et vice versa. Les NA restent des NA).
+
+#Ici on merge inventory_pars avec inventories inventories[T] permet de dupliquer la data.table inventories (car on va rajouter des colonnes à cette data.table dupliquée mais on ne veut pas altérer la data.table initiale). Pour merger deux data.table, ils doivent avoir le même nom de clef, ici on a choisi inventory_id
+mergeInventoryPartsAndInventories <- merge(inventory_parts,inventories[T][,inventory_id := id][,id := NULL],by="inventory_id")
+
+#Ici, sur notre mergeInventoryPartsAndInventories, on groupe par set_num (venu de inventories qu'on a mergé) et on somme les quantités. On merge avec les sets pour comparer les quantités qui sont dans sets et les quantités obtenus par sommation des quantités de chaque pièce. V1 représente la somme des quantités. On devrait trouver V1 == num_parts en théorie, mais la théorie rejoint rarement la pratique !
+#Histoire que l'histoire soit cohérente, on ne va garder que les sets cohérent.
+setsThatWeMustExclude <- merge(mergeInventoryPartsAndInventories[,sum(quantity),by="set_num"],sets[,c("num_parts","set_num")],by="set_num")[V1 != num_parts]
+```
+
+Si on résume notre modèle simplifié :
+
+Une boîte de jeu a un inventaire.
+Une boîte de jeu a un thème.
+Un inventaire a plusieurs inventory_parts.
+Chaque inventory_parts est la répétition d'une pièce, dans une couleur et dans une certaines quantités (pensez au petit livrer qui accompagne une boîte de jeu et qui décrit son contenu).
+Chaque pièce a une catégorie.
+
+### Questions
+
+How have the size of sets changed over time?
 
 What colors are associated with witch themes? Could you predict which theme a set is from just by the bricks it contains?
+
 What sets have the most-used pieces in them? What sets have the rarest pieces in them?
+
 Have the colors of LEGOs included in sets changed over time?
